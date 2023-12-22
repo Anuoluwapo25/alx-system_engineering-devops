@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Bash script that traps and ignores SIGTERM signal
+
+function message ()
+{
+	echo "I am invincible!!!"
+}
+
+trap message SIGTERM
+
+while true;
+do
+	echo "To infinity and beyond"
+	sleep 2
+done
