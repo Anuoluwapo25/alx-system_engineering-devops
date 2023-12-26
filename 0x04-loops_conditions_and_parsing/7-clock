@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Initialize variables
+hour=0
+minute=1
+
+# Loop for 70 lines
+count=0
+while [ $count -lt 70 ]; do
+    printf "%0d\n"  $minute
+
+    ((minute++))
+
+    if [ $minute -gt 59 ]; then
+        minute=1
+	printf  Hour:  "%d\n" $minute
+	minute=1
+        ((hour++))
+
+        if [ $hour -gt 12 ]; then
+            hour=1
+        fi
+    fi
+
+    # Increment count
+    ((count++))
+done
+
