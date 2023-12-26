@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Bash script with while loop and case statement
 
 # Initialize a counter
