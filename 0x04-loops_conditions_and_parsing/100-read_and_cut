@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#Bash script that displays the content of the file 
+
+echo "Content of /etc/passwd:"
+echo "------------------------"
+
+# Use IFS to set ':' as the field separator
+IFS=":"
+
+# Open the file for reading
+exec 3< /etc/passwd
+
+# Read each line of the file
+while read -u 3 username x uid gid info home shell; do
+    echo "Username: $username"
+    echo "User ID: $uid"
+    echo "Home Directory: $home"
+    echo "------------------------"
+done
+
+# Close the file descriptor
+exec 3<&-
+
