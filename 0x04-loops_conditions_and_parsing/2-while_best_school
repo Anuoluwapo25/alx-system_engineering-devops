@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Bash script to display "Best School" 10 times using a while loop
 
 # Initialize a counter
