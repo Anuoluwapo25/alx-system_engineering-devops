@@ -1,25 +1,26 @@
 #!/usr/bin/env bash
-# Bash script with while loop and case statement
+# displays 1 to 20
 
-# Initialize a counter
-count=1
+i=0
+while [ $i -lt 20 ];
+do
+	((i++));
 
-while [ $count -le 20 ]; do
-    case $count in
-        4)
-            echo "$count and then bad luck from China"
-            ;;
-        9)
-            echo "$count and then bad luck from Japan"
-            ;;
-        17)
-            echo "$count and then bad luck from Italy"
-            ;;
-        *)
-            echo $count
-            ;;
-    esac
-
-    ((count++))
+	case $i in
+	4)
+		echo "$i"
+		echo "bad luck from China"
+		;;
+	9)
+		echo "$i"
+		echo "bad luck from Japan"
+		;;
+	17)
+		echo "$i"
+		echo "bad luck from Italy"
+		;;
+	*)
+		echo "$i"
+		;;
+esac
 done
-
