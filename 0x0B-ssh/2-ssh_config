@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# congig
+Host 54.83.138.37
+   IdentityFile ~/.ssh/school
+   PasswordAuthentication no
+
