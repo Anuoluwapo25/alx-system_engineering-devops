@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# configure Nginx server to have a custom 404 page 
+
+sudo apt-get -y update
+sudo apt-get install nginx
+redirect="\\\tlocation \/redirect_me {\n\t\treturn 301 https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4;\n\t}\n"
+error404="\\\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var/www/html;\n\t\tinternal;\n\t}\n"
+echo " Ceci n'est pas une page " | sudo tee /var/www/html/404.html
+sudo sed -i "48i $redirect" /etc/nginx/sites-available/default
+sudo sed -i "48i $error404" /etc/nginx/sites-available/default
+sudo service nginx restart
