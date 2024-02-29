@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 # Apache to run on the container and to return
 
-sudo service apache2 start
+sudo docker exec -it d964377d0e42 /bin/bash
+service apache2 status
+service apache2 restart
+exit
