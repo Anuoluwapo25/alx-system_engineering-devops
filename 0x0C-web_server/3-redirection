@@ -3,7 +3,14 @@
 
 sudo apt-get -y update
 sudo apt-get -y install nginx
-redirect="\\\tlocation \/redirect_me {\n\t\treturn 301 https:\/\/www.
-youtube.com/watch?v=QH2-TGUlwu4
-sudo sed -i "48i $redirect" /etc/nginx/sites-available/default #Insert at line 48
-sudo service nginx restart
+
+echo -e "location /redirect_me {\n    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}\n" > /etc/nginx/sites-available/default
+
+/etc/init.d/nginx restart
+ps aux | grep nginx | grep -v grep > /dev/null
+
+if [ $? -eq 0 ]; then
+    echo "Nginx installed and configured for redirection!"
+else
+    echo "Error: Nginx installation or configuration failed."
+fi
