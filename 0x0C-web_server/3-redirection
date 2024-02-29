@@ -4,13 +4,33 @@
 sudo apt-get -y update
 sudo apt-get -y install nginx
 
-echo -e "location /redirect_me {\n    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n}\n" > /etc/nginx/sites-available/default
+sudo apt-get -y install ufw
+sudo ufw allow 'Nginx HTTP'
+sudo ufw enable
 
-/etc/init.d/nginx restart
-ps aux | grep nginx | grep -v grep > /dev/null
+mkdir -p /var/www/html/
+sudo chmod -R 755 /var/www
+echo 'Hello World!' | sudo tee /var/www/html/index.html
 
-if [ $? -eq 0 ]; then
-    echo "Nginx installed and configured for redirection!"
+SERVER_CONFIG="server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+	server_name _;
+	location / {
+		try_files \$uri \$uri/ =404;
+	}
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+	}
+}"
+
+sudo bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-available/default"
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+if [ "$(pgrep -c nginx)" -le 0 ]; then
+	sudo service nginx start
 else
-    echo "Error: Nginx installation or configuration failed."
+	sudo service nginx restart
 fi
