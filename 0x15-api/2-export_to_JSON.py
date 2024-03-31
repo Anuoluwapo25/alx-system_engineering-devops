@@ -1,30 +1,37 @@
 #!/usr/bin/python3
-""" Python to get data from an API and convert to Json"""
-import csv
-import json
-import requests
-import sys
+"""
+export in Json
+"""
 
 
-if __name__ == '__main__':
-    USER_ID = sys.argv[1]
-    url_to_user = 'https://jsonplaceholder.typicode.com/users/' + USER_ID
-    res = requests.get(url_to_user)
-    """Documentation"""
-    USERNAME = res.json().get('username')
-    """Documentation"""
-    url_to_task = url_to_user + '/todos'
-    res = requests.get(url_to_task)
-    tasks = res.json()
+if __name__ == "__main__":
+    import requests
+    import json
+    from sys import argv
 
-    dict_data = {USER_ID: []}
-    for task in tasks:
-        TASK_COMPLETED_STATUS = task.get('completed')
-        TASK_TITLE = task.get('title')
-        dict_data[USER_ID].append({
-                                  "task": TASK_TITLE,
-                                  "completed": TASK_COMPLETED_STATUS,
-                                  "username": USERNAME})
-    """print(dict_data)"""
-    with open('{}.json'.format(USER_ID), 'w') as f:
-        json.dump(dict_data, f)
+
+    id = int(argv[1])
+    values = requests.get("https://jsonplaceholder.typicode.com/todos").json()
+    users = requests.get("https://jsonplaceholder.typicode.com/users").json()
+    task = 0
+    total = 0
+    dump_dict = {}
+
+
+    for value in values:
+        if value["userId"] == id:
+            total += 1
+            if value["completed"]:
+                task += 1
+
+    for user in users:
+        if user['id'] == id:
+            dump_dict[id] = []
+            for value in values:
+                if value['userId'] == id:
+                    dump_dict[id].append({"task": value['title'],
+                                          "completed": value['completed'],
+                                          "username": user['username']})
+
+    with open("{}.json".format(id), "a+") as csvfile:
+        json.dump(dump_dict, fp=csvfile)
