@@ -1,37 +1,26 @@
 #!/usr/bin/python3
 """
-export in Json
+Write a Python script that, using this REST API,
+for a given employee ID, returns information about
+his/her TODO list progress
+export data in the json format.
 """
+import json
+import requests
+import sys
 
 
-if __name__ == "__main__":
-    import requests
-    import json
-    from sys import argv
+if __name__ == '__main__':
+    id_c = sys.argv[1]
+    url = "https://jsonplaceholder.typicode.com/"
+    users = requests.get("https://jsonplaceholder.typicode.com/users/{}"
+                         .format(id_c)).json()
+    todos = requests.get("https://jsonplaceholder.typicode.com/todos?userId={}"
+                         .format(sys.argv[1])).json()
 
-
-    id = int(argv[1])
-    values = requests.get("https://jsonplaceholder.typicode.com/todos").json()
-    users = requests.get("https://jsonplaceholder.typicode.com/users").json()
-    task = 0
-    total = 0
-    dump_dict = {}
-
-
-    for value in values:
-        if value["userId"] == id:
-            total += 1
-            if value["completed"]:
-                task += 1
-
-    for user in users:
-        if user['id'] == id:
-            dump_dict[id] = []
-            for value in values:
-                if value['userId'] == id:
-                    dump_dict[id].append({"task": value['title'],
-                                          "completed": value['completed'],
-                                          "username": user['username']})
-
-    with open("{}.json".format(id), "a+") as csvfile:
-        json.dump(dump_dict, fp=csvfile)
+    with open("{}.json".format(id_c), "w") as user_id:
+        json.dump({id_c: [{
+                'task': task.get('title'),
+                'completed': task.get('completed'),
+                'username': users.get('username')
+            } for task in todos]}, user_id)
