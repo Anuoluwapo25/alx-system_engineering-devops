@@ -1,5 +1,11 @@
+#!/usr/bin/python3
+"""
+queries the Reddit API
+"""
+
 import requests
 from sys import argv
+
 
 def number_of_subscribers(subreddit):
     """
@@ -19,6 +25,8 @@ def number_of_subscribers(subreddit):
         return "existing Subreddit"
 
 # Call the function with the subreddit provided as a command-line argument
+
+
 if __name__ == "__main__":
     if len(argv) != 2:
         print("Usage: python script.py subreddit_name")
@@ -26,4 +34,3 @@ if __name__ == "__main__":
         subreddit_name = argv[1]
         result = number_of_subscribers(subreddit_name)
         print(result)
-
