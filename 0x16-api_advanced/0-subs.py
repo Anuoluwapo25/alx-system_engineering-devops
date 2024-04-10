@@ -1,30 +1,28 @@
 #!/usr/bin/python3
 """
-function that queries the Reddit API
+queries the Reddit API
+returns the number of subscribers
+If invalid subreddit is given, returns 0
 """
+
 
 import requests
 from sys import argv
 
+
 def number_of_subscribers(subreddit):
     """
-    Returns the number of subscribers for a given subreddit.
+    connect to reddit API
+    returns the number of subscribers
     """
+    subreddit = argv[1]
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-    url = f"https://api.reddit.com/r/{subreddit}/about"
+    url = "https://api.reddit.com/r/{}/about".format(subreddit)
 
-    url_request = requests.get(url, headers=headers)
-    if url_request.status_code == 200:
-        response = url_request.json()
-        subs = response["data"]["subscribers"]
+    urlRequest = requests.get(url, headers=headers)
+    if urlRequest.status_code == 200:
+        response = urlRequest.json()
+        numSubscribers = response["data"]["subscribers"]
     else:
-        subs = 0
-    return subs
-
-if __name__ == "__main__":
-    if len(argv) != 2:
-        print("Usage: python script.py subreddit_name")
-    else:
-        subreddit_name = argv[1]
-        print(number_of_subscribers(subreddit_name))
-
+        numSubscribers = 0
+    return numSubscribers
