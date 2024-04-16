@@ -1,16 +1,6 @@
-# 0-strace_is_your_friend.pp
+#Puppet manifest to fix 'phpp' extensions to 'php' in wp-settings.php
 
-# Define a file resource to manage the Apache configuration file
-file { '/etc/apache2/apache2.conf':
-  ensure  => present,
-  content => template('apache/apache2.conf.erb'),
-  notify  => Service['apache2'],
+exec { 'fix-wordpress':
+  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+  path    => '/usr/local/bin/:/bin/'
 }
-
-# Define a service resource to ensure Apache is running and restart if necessary
-service { 'apache2':
-  ensure    => running,
-  enable    => true,
-  subscribe => File['/etc/apache2/apache2.conf'],
-}
-
